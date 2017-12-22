@@ -9,7 +9,9 @@
         "symfony/framework-bundle": "^3.4",
         "symfony/lts": "^3",
         "symfony/orm-pack": "^1.0",
-        "symfony/yaml": "^3.4"
+        "symfony/validator": "^3.4",
+        "symfony/yaml": "^3.4",
+        "vich/uploader-bundle": "^1.7"
     },
     "require-dev": {
         "symfony/dotenv": "^3.4",
