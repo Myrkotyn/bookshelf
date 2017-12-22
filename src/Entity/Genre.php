@@ -12,6 +12,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Genre
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")

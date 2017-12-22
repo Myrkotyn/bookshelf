@@ -12,6 +12,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Author
 {
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -29,7 +37,7 @@ class Author
      *
      * @return int
      */
-    public function getId():? int
+    public function getId(): ?int
     {
         return $this->id;
     }

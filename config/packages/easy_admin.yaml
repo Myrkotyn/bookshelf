@@ -1,6 +1,62 @@
-#easy_admin:
-#    entities:
-#        # List the entity class name you want to manage
-#        - App\Entity\Product
-#        - App\Entity\Category
-#        - App\Entity\User
+easy_admin:
+    entities:
+        Author:
+            class: App\Entity\Author
+            list:
+                fields:
+                    - { property: id, type: 'text' }
+                    - { property: name, type: 'text' }
+            form:
+                fields:
+                    - { property: name, type: 'text' }
+        Genre:
+            class: App\Entity\Genre
+            list:
+                fields:
+                    - { property: id, type: 'text' }
+                    - { property: name, type: 'text' }
+            form:
+                fields:
+                    - { property: name, type: 'text' }
+        Language:
+            class: App\Entity\Language
+            list:
+                fields:
+                    - { property: id, type: 'text' }
+                    - { property: name, type: 'text' }
+            form:
+                fields:
+                    - { property: name, type: 'text' }
+        Book:
+            class: App\Entity\Book
+            list:
+                fields:
+                    - { property: 'id', type: 'text' }
+                    - { property: 'title', type: 'text' }
+                    - { property: 'author', type: 'text' }
+                    - { property: 'genre', type: 'text' }
+                    - { property: 'image_name', type: 'image', base_path: 'uploads/images/books' }
+                    - { property: 'language', type: 'text' }
+                    - { property: 'publication_date', type: 'datetime' }
+                    - { property: 'isbnnumber', type: 'text' }
+            form:
+                fields:
+                    - { property: 'title', type: 'text' }
+                    - { property: 'author', type: 'entity', type_options: {
+                              class: App\Entity\Author,
+                              choice_label: 'name'
+                          }
+                      }
+                    - { property: 'genre', type: 'entity', type_options: {
+                              class: App\Entity\Genre,
+                              choice_label: 'name'
+                          }
+                      }
+                    - { property: 'language', type: 'entity', type_options: {
+                                class: App\Entity\Language,
+                                choice_label: 'name'
+                          }
+                      }
+                    - { property: 'publication_date', type: 'datetime' }
+                    - { property: 'isbnnumber', type: 'text' }
+                    - { property: 'imageFile', type: 'file' }

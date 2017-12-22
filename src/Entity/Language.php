@@ -11,6 +11,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Language
 {
+
+    /**
+     * Magic __toString method
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -38,7 +38,7 @@ class Book
     /**
      * @var File
      *
-     * @Vich\UploadableField(mapping="post_image", fileNameProperty="imageName", size="imageSize")
+     * @Vich\UploadableField(mapping="book_image", fileNameProperty="imageName")
      * @Assert\File(maxSize="2M", mimeTypesMessage = "Please upload a valid image")
      */
     private $imageFile;
@@ -114,7 +114,7 @@ class Book
      *
      * @return string
      */
-    public function getImageName(): string
+    public function getImageName(): ?string
     {
         return $this->imageName;
     }
@@ -125,7 +125,7 @@ class Book
      * @param string $imageName
      * @return Book
      */
-    public function setImageName(string $imageName): ? Book
+    public function setImageName($imageName): ? Book
     {
         $this->imageName = $imageName;
 
@@ -137,7 +137,7 @@ class Book
      *
      * @return File
      */
-    public function getImageFile(): File
+    public function getImageFile(): ? File
     {
         return $this->imageFile;
     }
