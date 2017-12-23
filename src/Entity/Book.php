@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -19,12 +20,14 @@ class Book
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"default"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
+     * @Groups({"default"})
      */
     private $title;
 
@@ -32,6 +35,7 @@ class Book
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     * @Groups({"default"})
      */
     private $imageName;
 
@@ -47,6 +51,7 @@ class Book
      * @ORM\ManyToOne(targetEntity="Author", inversedBy="books")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
      * @Assert\NotBlank()
+     * @Groups({"default"})
      */
     private $author;
 
@@ -54,6 +59,7 @@ class Book
      * @ORM\ManyToOne(targetEntity="Genre", inversedBy="books")
      * @ORM\JoinColumn(name="genre", referencedColumnName="id")
      * @Assert\NotBlank()
+     * @Groups({"default"})
      */
     private $genre;
 
@@ -61,18 +67,21 @@ class Book
      * @ORM\ManyToOne(targetEntity="Language", inversedBy="book")
      * @ORM\JoinColumn(name="language", referencedColumnName="id")
      * @Assert\NotBlank()
+     * @Groups({"default"})
      */
     private $language;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank()
+     * @Groups({"default"})
      */
     private $publicationDate;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
+     * @Groups({"default"})
      */
     private $ISBNNumber;
 
