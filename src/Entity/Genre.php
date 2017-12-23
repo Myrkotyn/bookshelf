@@ -24,14 +24,14 @@ class Genre
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"default"})
+     * @Groups({"default", "genre"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
-     * @Groups({"default"})
+     * @Groups({"default", "genre"})
      */
     private $name;
 
