@@ -2,10 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Author;
 use App\Entity\Book;
+use App\Entity\Genre;
+use App\Entity\Language;
+use App\File\ApiUploadedFile;
+use App\Form\BookType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -22,7 +28,7 @@ class BooksApiController extends FOSRestController
      * @param Request $request
      * @return View
      */
-    public function getAllBooks(Request $request)
+    public function getAllBooksAction(Request $request)
     {
         $books = $this->getDoctrine()->getManager()->getRepository(Book::class)->findAll();
 
@@ -42,8 +48,52 @@ class BooksApiController extends FOSRestController
      * @param Book    $book
      * @return View
      */
-    public function getBook(Request $request, Book $book)
+    public function getBookAction(Request $request, Book $book)
     {
         return View::create($this->get('serializer')->normalize($book, '', ["groups" => ["default"]]), Response::HTTP_OK);
+    }
+
+    /**
+     * @Rest\Post("/{author_id}/{genre_id}/{language_id}", name="create_new_book")
+     * @ParamConverter("author", class="App:Author", options={"id" = "author_id"})
+     * @ParamConverter("genre", class="App:Genre", options={"id" = "genre_id"})
+     * @ParamConverter("language", class="App:Language", options={"id" = "language_id"})
+     * @param Request  $request
+     * @param Author   $author
+     * @param Genre    $genre
+     * @param Language $language
+     * @return View
+     */
+    public function createAction(Request $request, Author $author, Genre $genre, Language $language)
+    {
+        $book = new \App\Form\Model\Book();
+
+        $form = $this->createForm(BookType::class, $book, [
+            'method' => Request::METHOD_POST
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $book = $form->getData();
+
+            $bookEntity = (new Book())
+                ->setTitle($book->getTitle())
+                ->setPublicationDate($book->getPublicationDate())
+                ->setISBNNumber($book->getISBNNumber())
+                ->setImageFile($book->getImageFile())
+                ->setTitle($book->getTitle())
+                ->setAuthor($author)
+                ->setGenre($genre)
+                ->setLanguage($language);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($bookEntity);
+            $em->flush();
+
+            return View::create($this->get('serializer')->normalize($bookEntity, '', ['groups' => ['default']]), Response::HTTP_CREATED);
+        }
+
+        return View::create($form, Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

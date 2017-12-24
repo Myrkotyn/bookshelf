@@ -72,8 +72,10 @@ class Book
     private $language;
 
     /**
+     * @var \DateTime
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank()
+     * @Assert\DateTime()
      * @Groups({"default"})
      */
     private $publicationDate;
@@ -154,7 +156,7 @@ class Book
     /**
      * Set file
      *
-     * @param File $imageFile
+     * @param File|UploadedFile $imageFile
      * @return Book
      */
     public function setImageFile(File $imageFile): ? Book
@@ -249,7 +251,7 @@ class Book
      * @param \DateTime $publicationDate
      * @return Book
      */
-    public function setPublicationDate($publicationDate): ? Book
+    public function setPublicationDate(\DateTime $publicationDate): ? Book
     {
         $this->publicationDate = $publicationDate;
 

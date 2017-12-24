@@ -22,7 +22,7 @@ class AuthorApiController extends FOSRestController
      * @param Request $request
      * @return View
      */
-    public function getAllAuthors(Request $request)
+    public function getAllAuthorsAction(Request $request)
     {
         $authors = $this->getDoctrine()->getManager()->getRepository(Author::class)->findAll();
 

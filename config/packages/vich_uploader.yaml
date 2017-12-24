@@ -8,6 +8,6 @@ vich_uploader:
             namer:
                 service: vich_uploader.namer_uniqid
 
-            inject_on_load:     false
+            inject_on_load:     true
             delete_on_update:   true
             delete_on_remove:   true

@@ -22,7 +22,7 @@ class GenreApiController extends FOSRestController
      * @param Request $request
      * @return View
      */
-    public function getAllGenres(Request $request)
+    public function getAllGenresAction(Request $request)
     {
         $genres = $this->getDoctrine()->getManager()->getRepository(Genre::class)->findAll();
 

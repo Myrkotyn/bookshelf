@@ -22,7 +22,7 @@ class LanguageApiController extends FOSRestController
      * @param Request $request
      * @return View
      */
-    public function getAllLanguages(Request $request)
+    public function getAllLanguagesAction(Request $request)
     {
         $languages = $this->getDoctrine()->getManager()->getRepository(Language::class)->findAll();
 
