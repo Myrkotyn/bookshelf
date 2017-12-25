@@ -6,8 +6,8 @@ use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Genre;
 use App\Entity\Language;
-use App\File\ApiUploadedFile;
 use App\Form\BookType;
+use App\Form\BookUpdateType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
@@ -36,7 +36,14 @@ class BooksApiController extends FOSRestController
             throw new NotFoundHttpException("Books not found");
         }
 
-        return View::create($this->get('serializer')->normalize($books, '', ["groups" => ["default"]]), Response::HTTP_OK);
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $books,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 5)
+        );
+
+        return View::create($this->get('serializer')->normalize($pagination, '', ["groups" => ["default"]]), Response::HTTP_OK);
     }
 
     /**
@@ -92,6 +99,32 @@ class BooksApiController extends FOSRestController
             $em->flush();
 
             return View::create($this->get('serializer')->normalize($bookEntity, '', ['groups' => ['default']]), Response::HTTP_CREATED);
+        }
+
+        return View::create($form, Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    /**
+     * @Rest\Put("/{id}", name="update_book")
+     *
+     * @param Request              $request
+     * @param Book $book
+     * @return View
+     */
+    public function updateAction(Request $request, Book $book)
+    {
+        $form = $this->createForm(BookUpdateType::class, $book, [
+            'method' => Request::METHOD_PUT
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($book);
+            $em->flush();
+
+            return View::create($this->get('serializer')->normalize($book, '', ['groups' => ['default']]), Response::HTTP_CREATED);
         }
 
         return View::create($form, Response::HTTP_UNPROCESSABLE_ENTITY);
