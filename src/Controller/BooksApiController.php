@@ -35,7 +35,7 @@ class BooksApiController extends FOSRestController
         if (!$books) {
             throw new NotFoundHttpException("Books not found");
         }
-
+        $paginatorCount = count($books) % 5;
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $books,
@@ -43,7 +43,7 @@ class BooksApiController extends FOSRestController
             $request->query->getInt('limit', 5)
         );
 
-        return View::create($this->get('serializer')->normalize($pagination, '', ["groups" => ["default"]]), Response::HTTP_OK);
+        return View::create($this->get('serializer')->normalize(["books" => $pagination, "paginatorCount" => $paginatorCount], '', ["groups" => ["default"]]), Response::HTTP_OK);
     }
 
     /**
@@ -107,8 +107,8 @@ class BooksApiController extends FOSRestController
     /**
      * @Rest\Put("/{id}", name="update_book")
      *
-     * @param Request              $request
-     * @param Book $book
+     * @param Request $request
+     * @param Book    $book
      * @return View
      */
     public function updateAction(Request $request, Book $book)
