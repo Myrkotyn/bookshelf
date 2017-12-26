@@ -30,7 +30,13 @@ class BooksApiController extends FOSRestController
      */
     public function getAllBooksAction(Request $request)
     {
-        $books = $this->getDoctrine()->getManager()->getRepository(Book::class)->findAll();
+        $repository = $this->getDoctrine()->getRepository(Book::class);
+        $search = $request->query->get('search', null);
+        if ($search) {
+            $books = $repository->search($search);
+        } else {
+            $books = $repository->findAll();
+        }
 
         if (!$books) {
             throw new NotFoundHttpException("Books not found");
