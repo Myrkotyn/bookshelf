@@ -41,7 +41,7 @@ class BooksApiController extends FOSRestController
         if (!$books) {
             throw new NotFoundHttpException("Books not found");
         }
-        $paginatorCount = count($books) % 5;
+        $paginatorCount = ceil(count($books) / 5);
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $books,
